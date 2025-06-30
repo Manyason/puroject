@@ -1,5 +1,4 @@
-# models.py
-from sqlalchemy import Column, Integer, String, Text, TIMESTAMP
+from sqlalchemy import Column, Integer, String, DateTime, func
 from database import Base
 
 class Recipe(Base):
@@ -11,5 +10,5 @@ class Recipe(Base):
     serves = Column(String(100), nullable=False)
     ingredients = Column(String(300), nullable=False)
     cost = Column(Integer, nullable=False)
-    created_at = Column(TIMESTAMP, nullable=False)
-    updated_at = Column(TIMESTAMP, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
