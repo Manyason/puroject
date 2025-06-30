@@ -18,7 +18,7 @@ def create_recipe(recipe: dict = Body(...), db: Session = Depends(get_db)):
     if not all(k in recipe for k in required):
         return {"message": "Recipe creation failed!", "required": "title, making_time, serves, ingredients, cost"}
     new_recipe = crud.create_recipe(db, recipe)
-    return {"message": "Recipe successfully created!", "recipe": crud.recipe_to_dict(new_recipe)}
+    return {"message": "Recipe successfully created!", "recipe": [crud.recipe_to_dict(new_recipe)]}
 
 @app.get("/recipes")
 def read_recipes(db: Session = Depends(get_db)):
@@ -30,7 +30,7 @@ def read_recipe(recipe_id: int, db: Session = Depends(get_db)):
     recipe = crud.get_recipe(db, recipe_id)
     if not recipe:
         raise HTTPException(status_code=404, detail={"message": "No Recipe found"})
-    return {"message": "Recipe details by ID", "recipe": crud.recipe_to_dict(recipe)}
+    return {"message": "Recipe details by id", "recipe": crud.recipe_to_dict(recipe)}
 
 @app.patch("/recipes/{recipe_id}")
 def update_recipe(recipe_id: int, updates: dict = Body(...), db: Session = Depends(get_db)):
